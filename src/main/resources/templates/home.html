@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈 화면</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+        }
+        .login-btn {
+            background-color: #4da6ff;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .login-btn:hover {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<button class="login-btn" onclick="goToLogin()">로그인</button>
+<script>
+    function goToLogin() {
+        window.location.href = "/login";
+    }
+</script>
+</body>
+</html>
