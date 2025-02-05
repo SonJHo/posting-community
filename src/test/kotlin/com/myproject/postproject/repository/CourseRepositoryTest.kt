@@ -19,7 +19,6 @@ class CourseRepositoryTest @Autowired constructor(
 ) {
 
     @Test
-    @Rollback(false)
     fun 강좌저장(){
     //given
         val course = Course()
@@ -29,6 +28,20 @@ class CourseRepositoryTest @Autowired constructor(
         em.flush()
     //then
         Assertions.assertThat(course).isEqualTo(courseRepository.findOne(course.id!!))
+    }
+
+    @Test
+    fun 강좌삭제(){
+        //given
+        val course = Course()
+        course.name = "컴퓨터구조론"
+        //when
+        em.persist(course)
+        em.flush()
+        em.remove(course)
+        val courses = courseRepository.findByName("컴퓨터구조론")
+        //then
+        Assertions.assertThat(courses!!.size).isSameAs(0)
     }
 
 

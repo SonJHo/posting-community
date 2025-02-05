@@ -15,6 +15,6 @@ class Course (
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "professor_id")
-    var professor: Professor? = null
+    @JoinColumn(name = "member_id")
+    var member: Member? = null //강의자
 )

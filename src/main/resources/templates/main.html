@@ -3,10 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메인 페이지</title>
+    <title>해양대 소통의 장...</title>
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .user-name {
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .logout-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .logout-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
 </head>
 <body>
-<h1>메인 페이지</h1>
+
+<header class="header">
+    <h1>메인 페이지</h1>
+    <div class="user-info">
+        <span class="user-name" th:text="${user.name}">User</span>
+        <form action="/logout" method="post">
+            <button type="submit" class="logout-btn">로그아웃</button>
+        </form>
+    </div>
+</header>
+
 <p>로그인에 성공하셨습니다!</p>
+
 </body>
 </html>

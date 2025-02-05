@@ -2,10 +2,10 @@ package com.myproject.postproject.service
 
 import com.myproject.postproject.domain.Grade
 import com.myproject.postproject.domain.Member
-import com.myproject.postproject.domain.Professor
 import com.myproject.postproject.repository.MemberRepository
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +24,8 @@ class MemberServiceTest @Autowired constructor(
     private val em : EntityManager
 ){
 
+
+
     fun createNewMember(
         accountId: String,
         password: String,
@@ -32,6 +34,7 @@ class MemberServiceTest @Autowired constructor(
     ): Member {
         return Member(accountId = accountId, password = password, name = name, studentId = studentId)
     }
+
 
 
     @Test
@@ -116,37 +119,9 @@ class MemberServiceTest @Autowired constructor(
         }
     }
 
-    @Test @Rollback(false)
-    fun 교수_회원가입(){
-        //given
-        val member = createNewMember("wnsgh708282", "wnsgh1598", "손준호", 123L)
-        member.grade = Grade.PROF
-        //when
-        memberService.join(member)
-
-        //then
-        val professor = em.find(Professor::class.java, member.id)
-        Assertions.assertThat(member).isEqualTo(professor.member)
-    }
 
 
-    @Test @Rollback(false)
-    fun 교수_탈퇴(){
-        //given
-        val member = createNewMember("wnsgh708282", "wnsgh1598", "손준호", 123L)
-        member.grade = Grade.PROF
-        //when
-        memberService.join(member)
-        memberService.withDraw(member)
-        em.flush()
 
-
-        val members = memberRepository.findByName("손준호")
-
-        Assertions.assertThat(members.size).isSameAs(0)
-
-
-    }
 
 
 

@@ -1,6 +1,5 @@
 package com.myproject.postproject.service
 
-import com.myproject.postproject.domain.Grade
 import com.myproject.postproject.domain.Member
 import com.myproject.postproject.repository.MemberRepository
 import org.springframework.stereotype.Service
@@ -18,19 +17,26 @@ class MemberService(
      * accountId : 영문 숫자 조합 7 ~ 13자
      * password : 영문 숫자 조합 7 ~ 13자
      */
-    fun logIn(accountId: String , password :String){
+    fun logIn(accountId: String, password: String): Member {
 
         val findPassword = validateAccount(accountId)
-        if (findPassword == password){
+        if (findPassword == password) {
             println("$accountId is login complete")
         }
+
+        return memberRepository.findByAccountId(accountId) ?: throw NoSuchElementException("해당 회원이 없습니다")
     }
+
 
     private fun validateAccount(accountId: String): String {
         val findMember = memberRepository.findByAccountId(accountId)
             ?: throw IllegalStateException("존재하지 않는 회원입니다")
 
         return findMember.password!!
+    }
+
+    fun logOut(){
+
     }
 
     @Transactional

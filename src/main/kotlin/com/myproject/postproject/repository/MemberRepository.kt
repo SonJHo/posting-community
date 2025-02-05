@@ -2,7 +2,6 @@ package com.myproject.postproject.repository
 
 import com.myproject.postproject.domain.Grade
 import com.myproject.postproject.domain.Member
-import com.myproject.postproject.domain.Professor
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Repository
 
@@ -16,16 +15,10 @@ class MemberRepository(
         em.persist(member)
         em.flush()
 
-        if(member.grade == Grade.PROF){
-            em.persist(Professor(name = member.name, member = member))
-        }
     }
 
     fun remove(member: Member){
-        if(member.grade == Grade.PROF){
-            val professor = em.find(Professor::class.java, member.id)
-            em.remove(professor)
-        }
+
         em.remove(member)
     }
 
