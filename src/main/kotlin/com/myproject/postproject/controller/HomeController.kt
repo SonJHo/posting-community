@@ -28,8 +28,8 @@ class HomeController (
     fun mainPage(model: Model, request: HttpServletRequest): String {
         val session = request.getSession(false) // 세션이 없으면 null 반환
         val loginUser = session?.getAttribute("loginUser") as? Member ?: return "redirect:/login"
+        model.addAttribute("loginUser", loginUser)
         val boards = boardRepository.findAll() ?: emptyList()
-        model.addAttribute("user", loginUser)
         model.addAttribute("boards", boards)
 
         return "main"

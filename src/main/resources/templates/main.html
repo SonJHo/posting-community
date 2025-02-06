@@ -18,106 +18,106 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #ddd;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 10;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            position: relative;
         }
 
         .header h1 {
-            font-size: 1.8em;
+            font-size: 2em;
             margin: 0;
         }
 
+        /* 사용자 정보 박스 디자인 */
         .user-info {
-            display: flex;
-            align-items: center;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: absolute; /* 절대 위치 설정 */
+        top: 20px; /* 상단 20px */
+        right: 20px; /* 우측 20px */
         }
 
-        .user-name {
-            margin-right: 15px;
+        .user-info .user-name {
             font-weight: bold;
+            font-size: 1.1em;
         }
 
-        .logout-btn {
-            background-color: #ff4d4d;
+        .user-info .logout-btn {
+            background-color: #f44336;
             color: white;
             border: none;
-            padding: 5px 10px;
-            cursor: pointer;
+            padding: 8px 15px;
             border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
         }
 
-        .logout-btn:hover {
-            background-color: #cc0000;
+        .user-info .logout-btn:hover {
+            background-color: #d32f2f;
         }
 
         /* 게시판 리스트 영역 */
         .board-list-container {
             margin-top: 80px;
             padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .board-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
             display: flex;
-            justify-content: center;
             flex-direction: column;
             align-items: center;
         }
 
-        .board-list {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .board-item {
-            padding: 15px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            color: #333;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
         .board-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .board-item span {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .board-item .creator-info {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 5px;
         }
 
         /* 게시판 생성 버튼 */
         .create-board-btn {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 30px;
             transition: background-color 0.2s ease;
+            font-size: 1em;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .create-board-btn:hover {
             background-color: #45a049;
-        }
-
-        /* 사용자 정보는 우측 상단 고정 */
-        .user-info {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        /* 게시판 항목 내부 사용자 정보 추가 스타일 */
-        .board-item .creator-info {
-            font-size: 0.9em;
-            color: #777;
-            margin-top: 5px;
         }
     </style>
 </head>
@@ -126,7 +126,7 @@
 <header class="header">
     <h1>대화 합시다..</h1>
     <div class="user-info">
-        <span class="user-name" th:text="${user.name}">User</span>
+        <span class="user-name" th:text="${loginUser.name}">User</span>
         <form action="/logout" method="post">
             <button type="submit" class="logout-btn">로그아웃</button>
         </form>
@@ -137,7 +137,7 @@
     <h2>게시판 목록</h2>
 
     <!-- 게시판 목록 출력 -->
-    <div class="board-list" th:each="board : ${boards}">
+    <div th:each="board : ${boards}" class="board-item">
         <a th:href="@{/board/{id}(id=${board.id})}" class="board-item">
             <span th:text="${board.name}">게시판 이름</span>
             <div class="creator-info">
@@ -145,10 +145,10 @@
             </div>
         </a>
     </div>
-
-    <!-- 게시판 생성 버튼 -->
-    <button class="create-board-btn" th:onclick="window.location.href='/board/create'">게시판 생성</button>
 </div>
+
+<!-- 게시판 생성 버튼 -->
+<button class="create-board-btn" th:onclick="window.location.href='/board/create'">게시판 생성</button>
 
 </body>
 </html>

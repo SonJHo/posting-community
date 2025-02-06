@@ -6,6 +6,7 @@ import com.myproject.postproject.repository.BoardRepository
 import com.myproject.postproject.repository.PostRepository
 import com.myproject.postproject.service.MemberService
 import com.myproject.postproject.service.PostService
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpSession
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -23,7 +24,9 @@ class PostController (
 ){
 
     @GetMapping("/post/create/")
-    fun showPostCreatePage(@RequestParam("boardId") boardId: Long, model: Model): String {
+    fun showPostCreatePage(@RequestParam("boardId") boardId: Long, model: Model, session: HttpSession): String {
+        val loginUser = session.getAttribute("loginUser") as? Member ?: return "redirect:/login"
+        model.addAttribute("loginUser", loginUser)
 
         model.addAttribute("boardId", boardId)
         return "posts/create-post" // create-post.html로 이동
@@ -31,8 +34,14 @@ class PostController (
 
     @PostMapping("/post/create")
 
-    fun createPost(@RequestParam("boardId") boardId: Long, @RequestParam("title") title: String, @RequestParam("content") content: String, session: HttpSession): String {
+    fun createPost(@RequestParam("boardId") boardId: Long,
+                   @RequestParam("title") title: String,
+                   @RequestParam("content") content: String,
+                   session: HttpSession,
+                   model: Model): String {
         val board = boardRepository.findOne(boardId) ?: return "redirect:/main" // 게시판을 찾을 수 없으면 메인으로 리디렉션
+        val loginUser = session.getAttribute("loginUser") as? Member ?: return "redirect:/login"
+        model.addAttribute("loginUser", loginUser)
 
         val member = session.getAttribute("loginUser") as? Member ?: return "redirect:/login"
         val post = Post(title = title, content = content, board = board, member = member)
@@ -42,9 +51,12 @@ class PostController (
     }
 
     @GetMapping("/post/{id}")
-    fun viewPost(@PathVariable id: Long, model: Model): String {
+    fun viewPost(@PathVariable id: Long, model: Model, session: HttpSession): String {
+        val loginUser = session.getAttribute("loginUser") as? Member ?: return "redirect:/login"
+        model.addAttribute("loginUser", loginUser)
+
         val post = postRepository.findOne(id) ?: return "redirect:/main" // 게시글을 찾을 수 없으면 메인으로 리디렉션
         model.addAttribute("post", post) // 게시글 정보를 모델에 추가
-        return "posts/view-post" // view-post.html 페이지로 이동
+        return "posts/post-detail" //
     }
 }

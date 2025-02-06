@@ -4,6 +4,7 @@ import com.myproject.postproject.domain.Board
 import com.myproject.postproject.domain.Member
 import com.myproject.postproject.repository.BoardRepository
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpSession
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,14 +20,21 @@ class BoardController (
 ){
 
     @GetMapping("/board/{id}")
-    fun viewBoard(@PathVariable id: Long, model: Model): String {
+    fun viewBoard(@PathVariable id: Long, model: Model, request: HttpServletRequest): String {
+        val session = request.getSession(false) // 세션이 없으면 null 반환
+        val loginUser = session?.getAttribute("loginUser") as? Member ?: return "redirect:/login"
+        model.addAttribute("loginUser", loginUser)
         val board = boardRepository.findOne(id) ?: return "redirect:/main" // 게시판을 찾을 수 없으면 메인으로 리디렉션
         model.addAttribute("board", board)
+        // 로그인된 사용자 정보 추가
         return "boards/board" // board.html 페이지로 이동
     }
 
+
     @GetMapping("/board/create")
-    fun createBoardPage(model: Model): String {
+    fun createBoardPage(model: Model, session: HttpSession): String {
+        val loginUser = session.getAttribute("loginUser") as? Member ?: return "redirect:/login"
+        model.addAttribute("loginUser", loginUser)
         return "boards/create-board" // create-board.html 페이지로 이동
     }
 

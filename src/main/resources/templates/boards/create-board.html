@@ -4,11 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판 생성</title>
+    <style>
+        /* 전체 레이아웃 설정 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* 헤더 디자인 */
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            position: relative; /* 상대 위치 지정 */
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        /* 로그인 사용자 정보 및 로그아웃 버튼 */
+        .user-info {
+           display: flex;
+           align-items: center;
+           gap: 10px;
+           position: absolute; /* 절대 위치 설정 */
+           top: 20px; /* 상단 20px */
+           right: 20px; /* 우측 20px */
+        }
+
+        .user-info .user-name {
+            margin-right: 10px;
+        }
+
+        .logout-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* 폼 영역 디자인 */
+        form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-top: 40px;
+            max-width: 500px;
+            margin: 40px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form label {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        form input {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: border 0.2s ease;
+        }
+
+        form input:focus {
+            border: 1px solid #4CAF50;
+        }
+
+        form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-size: 1.1em;
+            align-self: flex-end;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        /* 추가적인 스타일링 */
+        .back-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-size: 1em;
+        }
+
+        .back-link a:hover {
+            color: #45a049;
+        }
+    </style>
 </head>
 <body>
 
 <header class="header">
     <h1>게시판 생성</h1>
+    <!-- 사용자 이름과 로그아웃 버튼 -->
+    <div class="user-info">
+        <span class="user-name" th:text="${loginUser.name}">User</span>
+        <form action="/logout" method="post">
+            <button type="submit" class="logout-btn">로그아웃</button>
+        </form>
+    </div>
 </header>
 
 <form action="/board/create" method="post">
@@ -16,6 +141,10 @@
     <input type="text" id="boardName" name="name" required>
     <button type="submit">생성하기</button>
 </form>
+
+<div class="back-link">
+    <a href="/main" class="back-to-home">홈으로 돌아가기</a>
+</div>
 
 </body>
 </html>

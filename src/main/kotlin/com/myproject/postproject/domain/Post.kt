@@ -20,6 +20,8 @@ class Post (
     var title :String? = null,
 
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     var content :String? = null,
 
     var date :LocalDateTime? = null,
@@ -27,7 +29,10 @@ class Post (
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
-    var board: Board? = null
+    var board: Board? = null,
+
+    @OneToMany(mappedBy = "post")
+    var posts : MutableList<Comment> = mutableListOf()
 ){
 
 }
