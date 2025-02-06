@@ -4,6 +4,7 @@ import com.myproject.postproject.domain.Course
 import com.myproject.postproject.domain.CourseInfo
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 
 
 @Repository

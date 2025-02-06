@@ -105,8 +105,8 @@ class MemberService(
         }
     }
 
+    @Transactional
     fun withDraw(member: Member) {
-
         memberRepository.remove(member)
     }
 

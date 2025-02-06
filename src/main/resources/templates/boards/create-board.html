@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 생성</title>
+</head>
+<body>
+
+<header class="header">
+    <h1>게시판 생성</h1>
+</header>
+
+<form action="/board/create" method="post">
+    <label for="boardName">게시판 이름</label>
+    <input type="text" id="boardName" name="name" required>
+    <button type="submit">생성하기</button>
+</form>
+
+</body>
+</html>

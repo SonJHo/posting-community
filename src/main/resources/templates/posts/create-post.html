@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 작성</title>
+    <style>
+        /* 폼 스타일 */
+        .form-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .cancel-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .cancel-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>게시글 작성</h1>
+</header>
+
+<div class="form-container">
+    <h2>새 게시글 작성</h2>
+
+    <!-- 게시글 작성 폼 -->
+    <form action="/post/create" method="post">
+        <input type="hidden" name="boardId" th:value="${boardId}" />
+
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" class="input-field" required placeholder="게시글 제목을 입력하세요" />
+
+        <label for="content">내용</label>
+        <textarea id="content" name="content" class="input-field" rows="6" required placeholder="게시글 내용을 입력하세요"></textarea>
+
+        <button type="submit" class="submit-btn">등록</button>
+        <button type="button" class="cancel-btn" onclick="window.location.href='/board/${boardId}'">취소</button>
+    </form>
+</div>
+
+</body>
+</html>

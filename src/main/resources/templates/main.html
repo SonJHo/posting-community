@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>해양대 소통의 장...</title>
     <style>
+        /* 전체 레이아웃 설정 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* 헤더 디자인 */
         .header {
             display: flex;
             justify-content: space-between;
@@ -12,15 +21,28 @@
             padding: 10px 20px;
             background-color: #f8f9fa;
             border-bottom: 1px solid #ddd;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 10;
         }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+
         .user-info {
             display: flex;
             align-items: center;
         }
+
         .user-name {
             margin-right: 15px;
             font-weight: bold;
         }
+
         .logout-btn {
             background-color: #ff4d4d;
             color: white;
@@ -29,15 +51,80 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         .logout-btn:hover {
             background-color: #cc0000;
+        }
+
+        /* 게시판 리스트 영역 */
+        .board-list-container {
+            margin-top: 80px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .board-list {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .board-item {
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .board-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 게시판 생성 버튼 */
+        .create-board-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.2s ease;
+        }
+
+        .create-board-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* 사용자 정보는 우측 상단 고정 */
+        .user-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        /* 게시판 항목 내부 사용자 정보 추가 스타일 */
+        .board-item .creator-info {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
 
 <header class="header">
-    <h1>메인 페이지</h1>
+    <h1>대화 합시다..</h1>
     <div class="user-info">
         <span class="user-name" th:text="${user.name}">User</span>
         <form action="/logout" method="post">
@@ -46,7 +133,22 @@
     </div>
 </header>
 
-<p>로그인에 성공하셨습니다!</p>
+<div class="board-list-container">
+    <h2>게시판 목록</h2>
+
+    <!-- 게시판 목록 출력 -->
+    <div class="board-list" th:each="board : ${boards}">
+        <a th:href="@{/board/{id}(id=${board.id})}" class="board-item">
+            <span th:text="${board.name}">게시판 이름</span>
+            <div class="creator-info">
+                <span>create by: <span th:text="${board.createBy}">작성자 이름</span></span>
+            </div>
+        </a>
+    </div>
+
+    <!-- 게시판 생성 버튼 -->
+    <button class="create-board-btn" th:onclick="window.location.href='/board/create'">게시판 생성</button>
+</div>
 
 </body>
 </html>

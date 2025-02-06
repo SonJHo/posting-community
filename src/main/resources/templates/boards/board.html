@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+    <style>
+        /* 전체 레이아웃 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* 헤더 디자인 */
+        .header {
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        /* 게시글 목록 영역 */
+        .post-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .post-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .post-card h3 {
+            margin: 16px;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .post-card p {
+            margin: 0 16px;
+            color: #777;
+        }
+
+        .post-card .read-more {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 16px;
+        }
+
+        .post-card .read-more:hover {
+            background-color: #45a049;
+        }
+
+        /* 게시글 작성 버튼 스타일 */
+        .create-post-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px;
+            display: block;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: background-color 0.2s ease;
+        }
+
+        .create-post-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>게시판 - <span th:text="${board.name}">게시판 이름</span></h1>
+</header>
+
+<div class="post-list">
+    <h2>게시글 목록</h2>
+    <!-- 게시글 목록 출력 -->
+    <div th:each="post : ${board.postList}">
+        <div class="post-card">
+            <h3 th:text="${post.title}">게시글 제목</h3>
+            <p th:text="${#strings.abbreviate(post.content, 100)}">게시글 내용 미리보기</p>
+            <!-- 게시글 상세 페이지 링크 -->
+            <a th:href="@{/post/{id}(id=${post.id})}" class="read-more">게시글 보기</a>
+        </div>
+    </div>
+</div>
+
+<!-- 게시글 작성 버튼 -->
+<button class="create-post-btn" th:onclick="|window.location.href='/post/create/?boardId=' + ${board.id}|">게시글 작성</button>
+
+</body>
+</html>

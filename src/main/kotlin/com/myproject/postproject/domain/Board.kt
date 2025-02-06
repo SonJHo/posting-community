@@ -10,15 +10,15 @@ class Board(
     @Column(name = "board_id")
     var id: Long? = null,
 
+    @Column(name = "board_name")
     var name: String? = null,
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    var member: Member? = null,
+    @Column(name = "create_by")
+    var createBy: String? = null,
 
 
     var date: LocalDateTime? = null,
 
-
-    )
+    @OneToMany(mappedBy = "board", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var postList: MutableList<Post> = mutableListOf(),
+)

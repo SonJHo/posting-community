@@ -2,6 +2,7 @@ package com.myproject.postproject.domain
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
+import kotlin.time.measureTimedValue
 
 
 @Entity
@@ -18,12 +19,15 @@ class Post (
 
     var title :String? = null,
 
+
     var content :String? = null,
 
     var date :LocalDateTime? = null,
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     var board: Board? = null
+){
 
-)
+}
