@@ -56,9 +56,11 @@ class BoardRepositoryTest @Autowired constructor(
         board.date = LocalDateTime.now()
         //when
         boardRepository.save(board)
+        em.flush()
 
         boardRepository.remove(board)
         em.flush()
+
         //then
         Assertions.assertThat(boardRepository.findAll()!!.size).isSameAs(0)
     }

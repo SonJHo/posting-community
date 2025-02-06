@@ -16,68 +16,87 @@
         /* 헤더 디자인 */
         .header {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             padding: 20px;
             background-color: #4CAF50;
             color: white;
-            text-align: center;
-            position: relative; /* 상대 위치 지정 */
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
-            font-size: 2em;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             margin: 0;
+            font-size: 1.8em;
         }
 
-        /* 로그인 사용자 정보 및 로그아웃 버튼 */
+        /* 홈 버튼 (이미지 버튼) */
+        .home-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 110px;
+            height: 35px;
+            background: url('/static/images/home-icon.png') no-repeat center;
+            background-size: contain;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* 사용자 정보 */
         .user-info {
-           display: flex;
-           align-items: center;
-           gap: 10px;
-           position: absolute; /* 절대 위치 설정 */
-           top: 20px; /* 상단 20px */
-           right: 20px; /* 우측 20px */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
         }
 
         .user-info .user-name {
-            margin-right: 10px;
+            font-weight: bold;
+            font-size: 1em;
         }
 
-        .logout-btn {
+        .user-info .logout-btn {
             background-color: #f44336;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9em;
+            transition: background-color 0.2s;
         }
 
-        .logout-btn:hover {
+        .user-info .logout-btn:hover {
             background-color: #d32f2f;
         }
 
-        /* 폼 영역 디자인 */
-        form {
+        /* 폼 영역 */
+        .form-container {
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            margin-top: 40px;
-            max-width: 500px;
-            margin: 40px auto;
+            padding: 30px;
+            margin: 50px auto;
+            max-width: 400px;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        form label {
+        .form-container label {
             font-size: 1.1em;
             color: #333;
         }
 
-        form input {
+        .form-container input {
             padding: 10px;
             font-size: 1em;
             border: 1px solid #ddd;
@@ -86,36 +105,36 @@
             transition: border 0.2s ease;
         }
 
-        form input:focus {
+        .form-container input:focus {
             border: 1px solid #4CAF50;
         }
 
-        form button {
+        .form-container button {
             background-color: #4CAF50;
             color: white;
-            padding: 12px 24px;
+            padding: 12px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s ease;
-            font-size: 1.1em;
-            align-self: flex-end;
+            font-size: 1em;
         }
 
-        form button:hover {
+        .form-container button:hover {
             background-color: #45a049;
         }
 
-        /* 추가적인 스타일링 */
+        /* 홈으로 돌아가기 링크 */
         .back-link {
-            margin-top: 20px;
             text-align: center;
+            margin-top: 20px;
         }
 
         .back-link a {
             text-decoration: none;
             color: #4CAF50;
             font-size: 1em;
+            font-weight: bold;
         }
 
         .back-link a:hover {
@@ -126,8 +145,10 @@
 <body>
 
 <header class="header">
+    <button class="home-btn" onclick="window.location.href='/main'">
+        <img th:src="@{/images/logo.png}" alt="홈 버튼" width="110" height="35">
+    </button>
     <h1>게시판 생성</h1>
-    <!-- 사용자 이름과 로그아웃 버튼 -->
     <div class="user-info">
         <span class="user-name" th:text="${loginUser.name}">User</span>
         <form action="/logout" method="post">
@@ -136,14 +157,16 @@
     </div>
 </header>
 
-<form action="/board/create" method="post">
-    <label for="boardName">게시판 이름</label>
-    <input type="text" id="boardName" name="name" required>
-    <button type="submit">생성하기</button>
-</form>
+<div class="form-container">
+    <form action="/board/create" method="post">
+        <label for="boardName">게시판 이름</label>
+        <input type="text" id="boardName" name="name" required>
+        <button type="submit">생성하기</button>
+    </form>
+</div>
 
 <div class="back-link">
-    <a href="/main" class="back-to-home">홈으로 돌아가기</a>
+    <a href="/main">홈으로 돌아가기</a>
 </div>
 
 </body>

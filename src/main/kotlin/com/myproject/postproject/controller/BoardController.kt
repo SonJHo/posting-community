@@ -24,6 +24,7 @@ class BoardController (
         val session = request.getSession(false) // 세션이 없으면 null 반환
         val loginUser = session?.getAttribute("loginUser") as? Member ?: return "redirect:/login"
         model.addAttribute("loginUser", loginUser)
+
         val board = boardRepository.findOne(id) ?: return "redirect:/main" // 게시판을 찾을 수 없으면 메인으로 리디렉션
         model.addAttribute("board", board)
         // 로그인된 사용자 정보 추가

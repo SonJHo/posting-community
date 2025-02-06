@@ -44,7 +44,7 @@ class PostController (
         model.addAttribute("loginUser", loginUser)
 
         val member = session.getAttribute("loginUser") as? Member ?: return "redirect:/login"
-        val post = Post(title = title, content = content, board = board, member = member)
+        val post = Post(title = title, content = content, board = board, member = member, createBy = loginUser.name)
         postService.postUp(post)
 
         return "redirect:/board/$boardId" // 게시판 페이지로 리디렉션

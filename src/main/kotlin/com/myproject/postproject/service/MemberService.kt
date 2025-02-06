@@ -93,6 +93,10 @@ class MemberService(
             }
         }
 
+        if(memberRepository.findByAccountId(accountId) != null){
+            throw IllegalStateException("중복된 ID가 존재합니다")
+        }
+
         if (!(isContainsAlphabet && isContainsDigit)){
             throw IllegalStateException("ID 조건 만족하지 않습니다")
         }

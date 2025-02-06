@@ -15,59 +15,59 @@
 
         /* 헤더 디자인 */
         .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
             background-color: #4CAF50;
             color: white;
-            text-align: center;
-            position: relative; /* 상대 위치 지정 */
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             margin: 0;
-            font-size: 2em;
+            font-size: 1.8em;
         }
 
-        /* 홈 버튼 스타일 */
+        /* 홈 버튼 (이미지 버튼) */
         .home-btn {
             position: absolute;
-            top: 20px;
             left: 20px;
-            padding: 10px 20px;
-            background-color: #f44336;
-            color: white;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 110px;
+            height: 35px;
+            background: url('/static/images/home-icon.png') no-repeat center;
+            background-size: contain;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
-            text-decoration: none;
-            transition: background-color 0.3s;
         }
 
-        .home-btn:hover {
-            background-color: #d32f2f;
-        }
-
-
-        /* 사용자 정보 박스 디자인 */
+        /* 사용자 정보 */
         .user-info {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        position: absolute; /* 절대 위치 설정 */
-        top: 20px; /* 상단 20px */
-        right: 20px; /* 우측 20px */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
         }
 
         .user-info .user-name {
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em;
         }
 
         .user-info .logout-btn {
             background-color: #f44336;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9em;
@@ -77,55 +77,65 @@
         .user-info .logout-btn:hover {
             background-color: #d32f2f;
         }
-        /* 게시글 목록 영역 */
-        .post-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
 
-        .post-card {
+        /* 게시글 목록 영역 (스택 형태) */
+        .post-list {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
             background-color: white;
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease;
         }
 
-        .post-card:hover {
-            transform: translateY(-5px);
+        /* 게시글 항목 */
+        .post-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
         }
 
-        .post-card h3 {
-            margin: 16px;
-            font-size: 1.5em;
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-item a {
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
             color: #333;
         }
 
-        .post-card p {
-            margin: 0 16px;
+        .post-item a:hover {
+            text-decoration: underline;
+            color: #4CAF50;
+        }
+
+        .post-content {
+            flex-grow: 1;
+            margin: 0 15px;
+            font-size: 0.9em;
+            color: #555;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .post-meta {
+            font-size: 0.8em;
             color: #777;
+            display: flex;
+            gap: 10px;
         }
 
-        .post-card .read-more {
-            display: block;
-            text-align: center;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 16px;
+        .date {
+            color: #999;
         }
 
-        .post-card .read-more:hover {
-            background-color: #45a049;
-        }
-
-        /* 게시글 작성 버튼 스타일 */
+        /* 게시글 작성 버튼 */
         .create-post-btn {
             background-color: #4CAF50;
             color: white;
@@ -148,10 +158,11 @@
 <body>
 
 <header class="header">
-    <a href="/main" class="home-btn">홈으로 돌아가기</a> <!-- 홈 버튼 추가 -->
+    <button class="home-btn" onclick="window.location.href='/main'">
+        <img th:src="@{/images/logo.png}" alt="홈 버튼" width="110" height="35">
+    </button>
     <h1>게시판 - <span th:text="${board.name}">게시판 이름</span></h1>
 
-    <!-- 사용자 이름과 로그아웃 버튼 -->
     <div class="user-info">
         <span class="user-name" th:text="${loginUser.name}">User</span>
         <form action="/logout" method="post">
@@ -160,15 +171,22 @@
     </div>
 </header>
 
+<!-- 게시글 목록 -->
 <div class="post-list">
     <h2>게시글 목록</h2>
-    <!-- 게시글 목록 출력 -->
-    <div th:each="post : ${board.postList}">
-        <div class="post-card">
-            <h3 th:text="${post.title}">게시글 제목</h3>
-            <p th:text="${#strings.abbreviate(post.content, 100)}">게시글 내용 미리보기</p>
-            <!-- 게시글 상세 페이지 링크 -->
-            <a th:href="@{/post/{id}(id=${post.id})}" class="read-more">게시글 보기</a>
+
+    <div th:each="post : ${board.postList}" class="post-item">
+        <!-- 게시글 제목 -->
+        <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">게시글 제목</a>
+
+        <!-- 내용 미리보기 -->
+        <span class="post-content" th:text="${#strings.abbreviate(post.content, 40)}">내용 미리보기</span>
+
+        <!-- 작성자 & 게시 날짜 -->
+        <div class="post-meta">
+            <span class="author" th:text="${post.createBy}">작성자</span>
+            <span class="date" th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}">2025-02-07 14:30</span>
+
         </div>
     </div>
 </div>

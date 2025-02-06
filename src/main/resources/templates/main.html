@@ -21,35 +21,54 @@
             padding: 20px;
             background-color: #4CAF50;
             color: white;
-            text-align: center;
             position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
-            font-size: 2em;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             margin: 0;
+            font-size: 1.8em;
         }
+
+        /* 홈 버튼 (이미지 버튼) */
+        .home-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 110px;
+            height: 35px;
+            background: url('/static/images/home-icon.png') no-repeat center;
+            background-size: contain;
+            border: none;
+            cursor: pointer;
+        }
+
 
         /* 사용자 정보 박스 디자인 */
         .user-info {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        position: absolute; /* 절대 위치 설정 */
-        top: 20px; /* 상단 20px */
-        right: 20px; /* 우측 20px */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
         }
 
         .user-info .user-name {
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em;
         }
 
         .user-info .logout-btn {
             background-color: #f44336;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9em;
@@ -124,7 +143,11 @@
 <body>
 
 <header class="header">
-    <h1>대화 합시다..</h1>
+    <button class="home-btn" onclick="window.location.href='/main'">
+        <img th:src="@{/images/logo.png}" alt="홈 버튼" width="110" height="35">
+    </button>
+
+    <h1>커뮤니티</h1>
     <div class="user-info">
         <span class="user-name" th:text="${loginUser.name}">User</span>
         <form action="/logout" method="post">

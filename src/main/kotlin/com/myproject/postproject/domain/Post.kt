@@ -6,7 +6,7 @@ import kotlin.time.measureTimedValue
 
 
 @Entity
-class Post (
+class Post(
 
     @Id @GeneratedValue
     @Column(name = "post_id")
@@ -17,14 +17,16 @@ class Post (
     @JoinColumn(name = "member_id")
     var member: Member? = null,
 
-    var title :String? = null,
+    var title: String? = null,
 
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    var content :String? = null,
+    var content: String? = null,
 
-    var date :LocalDateTime? = null,
+    var date: LocalDateTime? = null,
+
+    var createBy: String? = null,
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,7 +34,7 @@ class Post (
     var board: Board? = null,
 
     @OneToMany(mappedBy = "post")
-    var posts : MutableList<Comment> = mutableListOf()
-){
+    var posts: MutableList<Comment> = mutableListOf(),
+) {
 
 }
