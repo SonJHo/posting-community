@@ -19,7 +19,9 @@ class HomeController (
     @RequestMapping("/")
     fun home(): String {
         log.info { "call home controller" }
-        return "home"
+
+
+        return "redirect:/login"
     }
 
 

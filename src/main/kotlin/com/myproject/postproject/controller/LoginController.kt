@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.lang.IllegalStateException
 
 
@@ -26,7 +27,7 @@ class LoginController (
 
     @PostMapping("/login")
     fun login(@Valid @ModelAttribute loginForm: LoginForm, bindingResult: BindingResult,
-              request: HttpServletRequest): String {
+              request: HttpServletRequest, model: Model): String {
         if (bindingResult.hasErrors()) {
             return "login/loginForm"
         }
@@ -34,10 +35,8 @@ class LoginController (
             val member = memberService.logIn(loginForm.accountId!!, loginForm.password!!)
             val session: HttpSession = request.getSession(true) // 세션이 없으면 생성
             session.setAttribute("loginUser", member) //세션에 로그인한 사용자 정보 저장
-
         } catch (e :IllegalStateException){
-            return "login/loginForm"
-        } catch (e : NoSuchElementException){
+            model.addAttribute("errorMessage", e.message)
             return "login/loginForm"
         }
 
@@ -45,8 +44,9 @@ class LoginController (
     }
 
     @PostMapping("/logout")
-    fun logOut(request: HttpServletRequest): String {
+    fun logOut(request: HttpServletRequest, redirectAttributes: RedirectAttributes): String {
         request.getSession(false)?.invalidate() // 세션 삭제
+        redirectAttributes.addFlashAttribute("logoutMessage", "로그아웃 되었습니다.")
         return "redirect:/login"
     }
 }

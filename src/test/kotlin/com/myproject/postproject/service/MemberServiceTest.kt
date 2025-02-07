@@ -1,16 +1,13 @@
 package com.myproject.postproject.service
 
-import com.myproject.postproject.domain.Grade
 import com.myproject.postproject.domain.Member
 import com.myproject.postproject.repository.MemberRepository
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
 
 import org.springframework.transaction.annotation.Transactional
 import java.lang.IllegalStateException

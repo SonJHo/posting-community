@@ -13,19 +13,19 @@ import java.lang.IllegalStateException
 
 @Controller
 class MemberController(
-    private val memberService: MemberService
+    private val memberService: MemberService,
 ) {
 
 
     @GetMapping("/members/new")
-    fun createForm(model : Model): String{
+    fun createForm(model: Model): String {
         model.addAttribute("memberForm", MemberForm())
         return "members/createMemberForm"
     }
 
     @PostMapping("/members/new")
-    fun create(@Valid memberForm: MemberForm, result : BindingResult ): String {
-        if(result.hasErrors()){
+    fun create(@Valid memberForm: MemberForm, result: BindingResult): String {
+        if (result.hasErrors()) {
             return "members/createMemberForm"
         }
 
@@ -41,9 +41,10 @@ class MemberController(
         try {
             memberService.join(member)
         } catch (e: IllegalStateException) {
-            result.reject("accountId", e.message ?: "회원가입 중 오류가 발생했습니다.")
+            result.rejectValue("accountId", "error.accountId", e.message ?: "회원가입 중 오류가 발생했습니다.")
             return "members/createMemberForm"
         }
+
         return "redirect:/main"
     }
 }

@@ -5,71 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
     <style>
+        /* 기본 바디 스타일 */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background: linear-gradient(135deg, #6a82fb, #fc5c7d); /* 그라디언트 배경 */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
+        /* 컨테이너 스타일 */
         .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
         }
 
         h2 {
-            text-align: center;
-            margin-bottom: 20px;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
         }
 
+        /* 입력 필드 그룹 */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
         }
 
         input {
             width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            transition: all 0.3s ease-in-out;
         }
 
+        input:focus {
+            outline: none;
+            border-color: #6a82fb;
+            background-color: #fff;
+        }
+
+        /* 에러 메시지 스타일 */
         .error-message {
             color: red;
             font-size: 12px;
+            margin-top: 5px;
         }
 
+        /* 버튼 스타일 */
         button {
             width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+            padding: 12px;
+            background-color: #6a82fb;
+            color: #fff;
+            font-size: 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #5a73e2;
         }
 
+        /* 링크 스타일 */
         .link-button {
             display: block;
-            text-align: center;
-            margin-top: 10px;
-            color: #007BFF;
+            margin-top: 20px;
+            color: #6a82fb;
+            font-size: 14px;
             text-decoration: none;
         }
 
@@ -77,29 +102,51 @@
             text-decoration: underline;
         }
 
-        .fieldError {
-            border-color: red;
+        /* 로그아웃 메시지 스타일 */
+        .logout-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #6a82fb;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+            font-size: 14px;
+        }
+
+        .logout-message.fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
         }
     </style>
 </head>
 <body>
+
 <div class="container">
+    <!-- 로그아웃 후 메시지 처리 -->
+    <div th:if="${logoutMessage}" class="logout-message" id="logoutMessage">
+        <p th:text="${logoutMessage}"></p>
+    </div>
+
     <h2>로그인</h2>
     <form action="/login" method="post" th:object="${loginForm}">
         <!-- 아이디 입력 필드 -->
         <div class="form-group">
             <label for="accountId">아이디</label>
             <input type="text" id="accountId" th:field="*{accountId}" class="form-control" placeholder="아이디를 입력하세요"
-                   th:class="${#fields.hasErrors('accountId')}? 'form-control fieldError' : 'form-control'" />
-            <p th:if="${#fields.hasErrors('accountId')}" th:errors="*{accountId}">아이디를 입력해주세요.</p>
+                   th:class="${#fields.hasErrors('accountId')}? 'fieldError' : ''" />
+            <p th:if="${#fields.hasErrors('accountId')}" th:errors="*{accountId}" class="error-message">아이디를 입력해주세요.</p>
         </div>
 
         <!-- 비밀번호 입력 필드 -->
         <div class="form-group">
             <label for="password">패스워드</label>
             <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요"
-                   th:class="${#fields.hasErrors('password')}? 'form-control fieldError' : 'form-control'" />
-            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호를 입력해주세요.</p>
+                   th:class="${#fields.hasErrors('password')}? 'fieldError' : ''" />
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message">비밀번호를 입력해주세요.</p>
         </div>
 
         <!-- 로그인 버튼 -->
@@ -109,5 +156,22 @@
     <!-- 회원가입 버튼 -->
     <a href="/members/new" class="link-button">회원가입</a>
 </div>
+
+<!-- JavaScript -->
+<script>
+    window.onload = function() {
+        // 로그아웃 메시지가 있을 경우, 3초 후에 사라지게 함
+        var message = document.getElementById("logoutMessage");
+        if (message) {
+            setTimeout(function() {
+                message.classList.add('fade-out');
+                setTimeout(function() {
+                    message.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+    };
+</script>
+
 </body>
 </html>

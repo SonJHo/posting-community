@@ -5,72 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 가입</title>
     <style>
+        /* 기본 바디 스타일 */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background: linear-gradient(135deg, #6a82fb, #fc5c7d); /* 그라디언트 배경 */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
+        /* 컨테이너 스타일 */
         .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 350px;
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: left; /* 좌측 정렬 */
         }
 
         h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
             text-align: center;
-            margin-bottom: 20px;
         }
 
+        /* 입력 필드 그룹 */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
         }
 
         input {
             width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            transition: all 0.3s ease-in-out;
         }
 
+        input:focus {
+            outline: none;
+            border-color: #6a82fb;
+            background-color: #fff;
+        }
+
+        /* 에러 메시지 스타일 */
         .error-message {
             color: red;
             font-size: 12px;
+            margin-top: 5px;
         }
 
+        /* 버튼 스타일 */
         button {
             width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+            padding: 12px;
+            background-color: #6a82fb;
+            color: #fff;
+            font-size: 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #5a73e2;
         }
 
+        /* 링크 스타일 */
         .link-button {
             display: block;
-            text-align: center;
-            margin-top: 10px;
-            color: #007BFF;
+            margin-top: 20px;
+            color: #6a82fb;
+            font-size: 14px;
             text-decoration: none;
+            text-align: center; /* 중앙 정렬 */
         }
 
         .link-button:hover {
@@ -79,10 +106,16 @@
     </style>
 </head>
 <body>
+
 <div class="container">
     <h2>회원 가입</h2>
 
     <form role="form" action="/members/new" th:object="${memberForm}" method="post">
+
+        <!-- 오류 메시지 표시 -->
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+        </div>
 
         <div class="form-group">
             <label for="accountId">아이디</label>
@@ -104,7 +137,6 @@
                    th:classappend="${#fields.hasErrors('name')} ? 'fieldError'">
             <p class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
         </div>
-
 
         <div class="form-group">
             <label for="age">나이</label>
@@ -130,7 +162,8 @@
         <button type="submit">회원 가입</button>
     </form>
 
-    <a href="/" class="link-button">홈으로 돌아가기</a>
+    <a href="/login" class="link-button">홈으로 돌아가기</a>
 </div>
+
 </body>
 </html>
