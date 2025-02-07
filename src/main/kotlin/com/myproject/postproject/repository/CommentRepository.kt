@@ -1,17 +1,14 @@
 package com.myproject.postproject.repository
 
 import com.myproject.postproject.domain.Comment
-import com.myproject.postproject.domain.CourseInfo
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 
 @Repository
 class CommentRepository(
     private val em :EntityManager
 ) {
-
 
     fun save(comment: Comment){
         em.persist(comment)

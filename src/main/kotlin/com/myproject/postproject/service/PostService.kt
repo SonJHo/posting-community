@@ -16,6 +16,10 @@ class PostService(
     private val boardRepository: BoardRepository,
 ) {
 
+    fun createPost(){
+
+    }
+
     @Transactional
     fun postUp(post: Post) {
         post.date = LocalDateTime.now()

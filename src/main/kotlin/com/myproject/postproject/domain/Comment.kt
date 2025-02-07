@@ -19,6 +19,7 @@ class Comment(
 
     var date: LocalDateTime? = null,
 
+    var createBy :String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

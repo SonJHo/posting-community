@@ -19,6 +19,7 @@ class Post(
 
     var title: String? = null,
 
+    var createBy : String? = null,
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
@@ -26,15 +27,11 @@ class Post(
 
     var date: LocalDateTime? = null,
 
-    var createBy: String? = null,
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     var board: Board? = null,
 
     @OneToMany(mappedBy = "post")
-    var posts: MutableList<Comment> = mutableListOf(),
-) {
-
-}
+    var comments: MutableList<Comment> = mutableListOf(),
+)
