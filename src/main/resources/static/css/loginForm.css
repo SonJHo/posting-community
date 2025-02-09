@@ -96,6 +96,11 @@ button:hover {
     text-decoration: underline;
 }
 
+#submit_btn:disabled {
+pointer-events: none;
+opacity: .7;
+}
+
 /* 로그아웃 메시지 스타일 */
 .logout-message {
     position: fixed;
