@@ -1,6 +1,8 @@
 package com.myproject.postproject.controller
 
 import com.myproject.postproject.domain.Member
+import com.myproject.postproject.dto.login.MemberForm
+import com.myproject.postproject.dto.login.toMember
 import com.myproject.postproject.service.MemberService
 import jakarta.validation.Valid
 import org.springframework.stereotype.Controller
@@ -25,19 +27,12 @@ class MemberController(
 
     @PostMapping("/members/new")
     fun create(@Valid memberForm: MemberForm, result: BindingResult): String {
+        //Valid 애노테이션에서 MemberForm 필드의 제약조건 검증후 오류를 result에 담아서 반환
         if (result.hasErrors()) {
             return "members/createMemberForm"
         }
 
-        val member = Member().apply {
-            accountId = memberForm.accountId
-            password = memberForm.password
-            name = memberForm.name
-            age = memberForm.age
-            emailAddress = memberForm.emailAddress
-            tel = memberForm.tel
-        }
-
+        val member = memberForm.toMember()  //DTO 를 객체로 바꾸는 방법.1
         try {
             memberService.join(member)
         } catch (e: IllegalStateException) {
