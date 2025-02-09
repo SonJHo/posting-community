@@ -158,7 +158,7 @@
     </button>
     <!-- 사용자 정보 추가 -->
     <div class="user-info">
-        <span class="user-name" th:text="${loginUser.name}">User</span>
+        <span class="user-name" th:text="${userName}">User</span>
         <form action="/logout" method="post">
             <button type="submit" class="logout-btn">로그아웃</button>
         </form>

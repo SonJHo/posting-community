@@ -23,7 +23,6 @@ class MemberService(
         return findMemberWithAuthenticate(accountId, rawPassword)
     }
 
-
     private fun findMemberWithAuthenticate(accountId: String, rawPassword: String): Member {
         val findMember = memberRepository.findByAccountId(accountId)
             ?: throw IllegalStateException("존재하지 않는 회원입니다")

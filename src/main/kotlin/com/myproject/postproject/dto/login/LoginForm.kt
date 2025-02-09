@@ -1,4 +1,4 @@
-package com.myproject.postproject.controller
+package com.myproject.postproject.dto.login
 
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern

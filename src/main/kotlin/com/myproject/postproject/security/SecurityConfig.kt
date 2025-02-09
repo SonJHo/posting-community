@@ -27,6 +27,12 @@ class SecurityConfig  {
             .httpBasic { httpBasic ->
                 httpBasic.disable()  // 기본 HTTP 인증 비활성화
             }
+            .logout { logout ->
+                logout
+                    .logoutUrl("/logout")  // 로그아웃 경로 설정
+                    .logoutSuccessUrl("/login-page")  // 로그아웃 후 리다이렉트할 경로
+                    .permitAll()  // 로그아웃 요청을 누구나 허용
+            }
 
         return http.build()  // SecurityFilterChain 반환
     }
