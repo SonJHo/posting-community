@@ -45,6 +45,6 @@ class MemberController(
             return "members/createMemberForm"
         }
 
-        return "redirect:/main"
+        return "redirect:/login-page"
     }
 }

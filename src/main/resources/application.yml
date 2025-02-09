@@ -15,9 +15,17 @@ spring:
         show_sql: true #생성한 SQL 이 다 보임 :) System out 을 통해 출력.
         format_sql: true
 
+  security:
+    user:
+      name: admin
+      password: "$2a$10$rU7pHDkBdhHRBmYvzckluev3btrOF0m7P/HLDXpi3DJPWAVdq4OKy"
+
 logging:
   level:
     org.hibernate.SQL: debug #sql 을 전부 DEBUG 모드로 남긴다는 뜻. Logger 를 통해.
     org.hibernate.orm.jdbc.bind: trace
+
 server:
+  address: 0.0.0.0
   port: 8080
+

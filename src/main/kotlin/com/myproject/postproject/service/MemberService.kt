@@ -2,9 +2,9 @@ package com.myproject.postproject.service
 
 import com.myproject.postproject.domain.Member
 import com.myproject.postproject.repository.MemberRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.validation.BindingResult
 import kotlin.IllegalStateException
 
 
@@ -12,52 +12,53 @@ import kotlin.IllegalStateException
 @Transactional(readOnly = true)
 class MemberService(
     private val memberRepository: MemberRepository,
+    private val passwordEncoder: BCryptPasswordEncoder,
 ) {
     /**
      * 회원가입
      * accountId : 영문 숫자 조합 7 ~ 13자
      * password : 영문 숫자 조합 7 ~ 13자
      */
-    fun logIn(accountId: String, password: String): Member {
-
-        val findPassword = validateAccount(accountId)
-        if (findPassword == password) {
-            println("$accountId is login complete")
-        }
-        return memberRepository.findByAccountId(accountId) ?: throw IllegalStateException("해당 회원이 없습니다")
+    fun logIn(accountId: String, rawPassword: String): Member {
+        return findMemberWithAuthenticate(accountId, rawPassword)
     }
 
 
-    private fun validateAccount(accountId: String): String {
+    private fun findMemberWithAuthenticate(accountId: String, rawPassword: String): Member {
         val findMember = memberRepository.findByAccountId(accountId)
             ?: throw IllegalStateException("존재하지 않는 회원입니다")
 
-        return findMember.password!!
+        val isSuccess = passwordEncoder.matches(rawPassword, findMember.password)
+
+        if (isSuccess){
+            return findMember
+        }else{
+            throw IllegalStateException("비밀번호가 틀렸습니다")
+        }
     }
 
-    fun logOut(){
+
+    fun logOut() {
 
     }
-
 
 
     @Transactional
     fun join(member: Member) {
         validateId(member)
         validatePassword(member)
-
         memberRepository.save(member)
     }
 
     private fun validatePassword(member: Member) {
-        val password = member.password!!
-        if (password.length !in 7..13) {
+        val rawPassword = member.password!!
+        if (rawPassword.length !in 7..13) {
             throw IllegalStateException("Password 조건 만족하지 않습니다")
         }
         var isContainsAlphabet = false
         var isContainsDigit = false
 
-        for (c in password) {
+        for (c in rawPassword) {
             if (!(c.isDigit() || c.isLetter())) {
                 throw IllegalStateException("Password 조건 만족하지 않습니다")
             }
@@ -71,6 +72,8 @@ class MemberService(
         if (!(isContainsAlphabet && isContainsDigit)) {
             throw IllegalStateException("Password 조건 만족하지 않습니다")
         }
+
+        member.password = passwordEncoder.encode(rawPassword)// 해싱 + 솔트값 암호화
     }
 
     private fun validateId(member: Member) {
@@ -103,7 +106,6 @@ class MemberService(
     }
 
 
-
     @Transactional
     fun withDraw(member: Member) {
         memberRepository.remove(member)
@@ -113,7 +115,8 @@ class MemberService(
     fun findMembers(): MutableList<Member> {
         return memberRepository.findAll() ?: return mutableListOf()
     }
-    fun findOne(id : Long): Member? {
+
+    fun findOne(id: Long): Member? {
         return memberRepository.findOne(id)
     }
 }

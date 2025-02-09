@@ -34,6 +34,9 @@ dependencies {
 	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.2")
 	implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-devtools")
+
 
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("com.h2database:h2")

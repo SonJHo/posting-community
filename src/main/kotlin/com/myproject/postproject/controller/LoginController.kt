@@ -19,13 +19,13 @@ class LoginController (
     private val memberService: MemberService
 ){
 
-    @GetMapping("/login")
+    @GetMapping("/login-page")
     fun loginForm(model : Model) :String{
         model.addAttribute("loginForm", LoginForm())
         return "login/loginForm"
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login-page")
     fun login(@Valid @ModelAttribute loginForm: LoginForm, bindingResult: BindingResult,
               request: HttpServletRequest, model: Model): String {
         if (bindingResult.hasErrors()) {

@@ -21,7 +21,7 @@ class HomeController (
         log.info { "call home controller" }
 
 
-        return "redirect:/login"
+        return "redirect:/login-page"
     }
 
 
