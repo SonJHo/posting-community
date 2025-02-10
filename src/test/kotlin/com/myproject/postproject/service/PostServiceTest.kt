@@ -1,16 +1,13 @@
 package com.myproject.postproject.service
 
-import com.myproject.postproject.domain.Board
 import com.myproject.postproject.domain.Post
 import com.myproject.postproject.repository.BoardRepository
 import com.myproject.postproject.repository.PostRepository
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
 
 
@@ -41,7 +38,7 @@ class PostServiceTest @Autowired constructor(
         em.flush()
     //then
         val posts = postRepository.findAll()
-        val findBoard = boardRepository.findOne(board.id!!)
+        val findBoard = boardRepository.findById(board.id!!)
 
         Assertions.assertThat(posts!!.size).isSameAs(1)
         Assertions.assertThat(findBoard!!.postList.size).isSameAs(1)

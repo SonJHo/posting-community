@@ -205,16 +205,26 @@
     </div>
 </header>
 
-<!-- 게시글 상세 내용 -->
 <div class="post-detail">
     <h2 th:text="${post.title}">게시글 제목</h2>
+
+    <div th:if="${post.member.accountId == userAccountId}">
+        <button id="delete-post-btn"
+                class="delete-post-btn"
+                th:data-post-id="${post.id}"
+                style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+            삭제
+        </button>
+    </div>
+
+
+
     <div class="meta">
         <span class="author" th:text="${post.createBy}">작성자</span>
         <span class="date" th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}">2025-02-07 14:30</span>
     </div>
     <div class="content" th:text="${post.content}">게시글 내용</div>
 </div>
-
 <!-- 목록으로 돌아가기 버튼 -->
 <div class="back-btn-container" style="margin-top: 20px;">
     <button th:onclick="|window.location.href='/board/' + ${post.board.id}|"
@@ -240,10 +250,70 @@
             <div class="meta">
                 <span th:text="${comment.createBy}">작성자</span>
                 <span th:text="${#temporals.format(comment.date, 'yyyy-MM-dd HH:mm')}">2025-02-07 15:00</span>
+
+                <!-- 로그인한 사용자의 댓글이면 삭제 버튼 표시 -->
+                <button th:if="${comment.member.accountId == userAccountId}"
+                        th:data-comment-id="${comment.id}"
+                        class="delete-comment-btn"
+                        style="margin-left: 10px; padding: 5px 10px; font-size: 0.8em; background-color: red; color: white; border: none; cursor: pointer;">
+                    삭제
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".delete-comment-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let commentId = this.getAttribute("data-comment-id");
+
+                if (confirm("댓글을 삭제하시겠습니까?")) {
+                    fetch(`/comment/${commentId}`, {
+                        method: "DELETE"
+                    })
+                    .then(response => response.text())
+                    .then(message => {
+                        alert(message);
+                        location.reload();  // 페이지 새로고침하여 댓글 목록 갱신
+                    })
+                    .catch(error => console.error("댓글 삭제 오류:", error));
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const deletePostBtn = document.getElementById('delete-post-btn');
+
+    if (deletePostBtn) {
+        deletePostBtn.addEventListener("click", function () {
+            const postId = this.getAttribute("data-post-id");  // 데이터 속성에서 게시글 ID 가져오기
+
+            if (confirm("게시글을 삭제하시겠습니까?")) {
+                fetch(`/post/${postId}/delete`, {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())  // 서버에서 JSON 형태로 메시지와 리다이렉트 URL 반환받기
+                .then(data => {
+                    alert(data.message);  // 메시지 출력
+                    window.location.href = data.redirectUrl;  // 리다이렉트 URL로 이동
+                })
+                .catch(error => console.error("게시글 삭제 오류:", error));
+            }
+        });
+    }
+});
+
+
+</script>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

@@ -19,7 +19,7 @@ class CommentRepository(
     }
 
 
-    fun findOne(id :Long): Comment? {
+    fun findById(id :Long): Comment? {
         return em.find(Comment::class.java, id)
     }
 

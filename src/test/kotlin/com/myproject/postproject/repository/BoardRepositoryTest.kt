@@ -5,13 +5,10 @@ import com.myproject.postproject.domain.Member
 import com.myproject.postproject.service.MemberService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
-import java.security.PrivateKey
 import java.time.LocalDateTime
 
 
@@ -43,7 +40,7 @@ class BoardRepositoryTest @Autowired constructor(
         boardRepository.save(board)
         em.flush()
     //then
-        Assertions.assertThat(board).isEqualTo(boardRepository.findOne(board.id!!))
+        Assertions.assertThat(board).isEqualTo(boardRepository.findById(board.id!!))
 
     }
 

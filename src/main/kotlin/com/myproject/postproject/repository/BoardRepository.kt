@@ -1,6 +1,7 @@
 package com.myproject.postproject.repository
 
 import com.myproject.postproject.domain.Board
+import com.myproject.postproject.domain.Member
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -12,8 +13,9 @@ class BoardRepository (
     private val em :EntityManager
 ){
 
-    fun createBoard(name: String, createdBy: String): Board {
-        return Board(name = name, createBy = createdBy, date = LocalDateTime.now())
+    fun createBoard(name: String, member: Member): Board {
+        return Board(name = name, createBy = member.name, member = member
+            , date = LocalDateTime.now())
     }
 
     @Transactional
@@ -21,12 +23,13 @@ class BoardRepository (
         em.persist(board)
     }
 
+    @Transactional
     fun remove(board: Board){
         em.remove(board)
     }
 
 
-    fun findOne(id :Long): Board? {
+    fun findById(id :Long): Board? {
         return em.find(Board::class.java, id)
     }
 

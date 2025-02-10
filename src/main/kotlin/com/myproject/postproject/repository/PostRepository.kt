@@ -1,6 +1,5 @@
 package com.myproject.postproject.repository
 
-import com.myproject.postproject.domain.Board
 import com.myproject.postproject.domain.Post
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Repository
@@ -22,7 +21,7 @@ class PostRepository (
     }
 
 
-    fun findOne(id :Long): Post? {
+    fun findById(id :Long): Post? {
         return em.find(Post::class.java, id)
     }
 

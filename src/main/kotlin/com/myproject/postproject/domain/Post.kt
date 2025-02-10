@@ -32,6 +32,6 @@ class Post(
     @JoinColumn(name = "board_id")
     var board: Board? = null,
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
     var comments: MutableList<Comment> = mutableListOf(),
 )

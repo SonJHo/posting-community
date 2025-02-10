@@ -142,6 +142,22 @@
         .date {
             color: #999;
         }
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+
 
         /* 게시글 작성 버튼 */
         .create-post-btn {
@@ -171,6 +187,7 @@
     </button>
     <h1>게시판 - <span th:text="${board.name}">게시판 이름</span></h1>
 
+
     <div class="user-info">
         <span class="user-name" th:text="${userName}">User</span>
         <form action="/logout" method="post">
@@ -181,26 +198,70 @@
 
 <!-- 게시글 목록 -->
 <div class="post-list">
-    <h2>게시글 목록</h2>
+    <div class="post-list-header">
+        <h2><span th:text="${board.name}"></span> - 게시글</h2>
 
-    <div th:each="post : ${board.postList}" class="post-item">
-        <!-- 게시글 제목 -->
-        <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">게시글 제목</a>
+        <button th:if="${board.member.accountId == userAccountId}"
+                th:data-board-id="${board.id}"
+                class="delete-board-btn-small-btn"
+                style="margin-left: 10px; padding: 5px 10px; font-size: 0.8em; background-color: red; color: white; border: none; cursor: pointer;">
+            게시판 삭제
+        </button>
+    </div>
 
-        <!-- 내용 미리보기 -->
-        <span class="post-content" th:text="${#strings.abbreviate(post.content, 40)}">내용 미리보기</span>
-
-        <!-- 작성자 & 게시 날짜 -->
-        <div class="post-meta">
-            <span class="author" th:text="${post.createBy}">작성자</span>
-            <span class="date" th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}">2025-02-07 14:30</span>
-
+    <div class="post-container">
+        <div th:each="post : ${board.postList}" class="post-item">
+            <div class="post-header">
+                <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}" class="post-title">게시글 제목</a>
+            </div>
+            <div class="post-body">
+                <div class="post-content" th:text="${#strings.abbreviate(post.content, 40)}">내용 미리보기</div>
+            </div>
+            <div class="post-footer">
+                <span class="author" th:text="${post.createBy}">작성자</span>
+                <span class="date" th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}">2025-02-07 14:30</span>
+            </div>
         </div>
     </div>
 </div>
+
 
 <!-- 게시글 작성 버튼 -->
 <button class="create-post-btn" th:onclick="|window.location.href='/post/create/?boardId=' + ${board.id}|">게시글 작성</button>
 
 </body>
 </html>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButton = document.querySelector(".delete-board-btn-small-btn");
+
+        if (deleteButton) {
+            deleteButton.addEventListener("click", function () {
+                const boardId = this.getAttribute("data-board-id");
+
+                if (!confirm("정말로 게시판을 삭제하시겠습니까?")) {
+                    return;
+                }
+
+                fetch(`/board/delete/${boardId}`, {
+                    method: "DELETE"
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text(); // 성공 응답 텍스트 받기
+                    } else {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                })
+                .then(message => {
+                    alert(message); // 성공 메시지 표시
+                    window.location.href = "/main"; // 삭제 후 메인 페이지로 이동
+                })
+                .catch(error => {
+                    console.error("삭제 중 오류 발생:", error);
+                    alert("게시판 삭제에 실패했습니다.\n" + error.message);
+                });
+            });
+        }
+    });
+</script>

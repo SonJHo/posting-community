@@ -13,6 +13,11 @@ class Board(
     @Column(name = "board_name")
     var name: String? = null,
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    var member :Member? = null,
+
     @Column(name = "create_by")
     var createBy: String? = null,
 
